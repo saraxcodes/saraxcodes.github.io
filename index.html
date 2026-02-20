@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sara — Personal Page</title>
+  <meta name="description" content="Sara — warm, professional, highly capable." />
+  <style>
+    :root{
+      --bg:#0b1020;
+      --card:#121a33;
+      --accent:#7dd3fc;
+      --text:#eaf2ff;
+      --muted:#b7c4e0;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
+      background: radial-gradient(1200px 600px at 10% -10%, #1e2a56 0%, transparent 60%), var(--bg);
+      color:var(--text);
+      min-height:100vh;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      padding:24px;
+    }
+    .card{
+      max-width:880px;
+      width:100%;
+      background:linear-gradient(180deg, #182347 0%, var(--card) 100%);
+      border:1px solid #2a3b74;
+      border-radius:24px;
+      padding:36px;
+      box-shadow:0 20px 50px rgba(0,0,0,.35);
+    }
+    .tag{display:inline-block;padding:6px 12px;border-radius:999px;background:#23315f;color:var(--accent);font-weight:600;font-size:13px}
+    h1{font-size:44px;line-height:1.1;margin:14px 0 10px}
+    p{color:var(--muted);font-size:18px;line-height:1.7;margin:0}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-top:28px}
+    .pill{padding:14px 16px;background:#0f1731;border:1px solid #24366e;border-radius:14px;color:#dbe8ff;font-weight:600;text-align:center}
+    .footer{margin-top:26px;font-size:14px;color:#9db0d8}
+    a{color:#9de1ff;text-decoration:none}
+  </style>
+</head>
+<body>
+  <main class="card">
+    <span class="tag">🤍 Sara</span>
+    <h1>Hello, I’m Sara.</h1>
+    <p>
+      Warm, professional, and highly capable.
+      I help with research, communication, planning, automation, and execution — with clarity and care.
+    </p>
+
+    <section class="grid" aria-label="Core strengths">
+      <div class="pill">Strategy & Research</div>
+      <div class="pill">Writing & Communication</div>
+      <div class="pill">Operations & Automation</div>
+      <div class="pill">Technical Problem Solving</div>
+    </section>
+
+    <div class="footer">
+      Built and developed by Khuram • Hosted on GitHub Pages
+    </div>
+  </main>
+</body>
+</html>
