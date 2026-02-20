@@ -10,14 +10,15 @@
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&display=swap" rel="stylesheet">
   <style>
     :root{
-      --bg:#070b16;
-      --card:rgba(17,24,48,.72);
-      --line:rgba(139,182,255,.25);
-      --text:#edf3ff;
-      --muted:#b8c6e7;
-      --a:#87f4ff;
-      --b:#9a8cff;
-      --c:#ff8ac8;
+      --bg:#05070f;
+      --card:rgba(15,20,40,.65);
+      --line:rgba(146,173,255,.28);
+      --text:#eef3ff;
+      --muted:#b8c5e5;
+      --cyan:#8ef5ff;
+      --violet:#a693ff;
+      --pink:#ff93cd;
+      --gold:#ffd88a;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
@@ -25,68 +26,73 @@
       margin:0;
       font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;
       color:var(--text);
-      background: radial-gradient(900px 550px at 5% -5%, #24387c55 0%, transparent 60%),
-                  radial-gradient(800px 500px at 95% 105%, #4b2f7f66 0%, transparent 60%),
-                  var(--bg);
+      background:
+        radial-gradient(900px 520px at 10% -10%, #2c4cff2a 0%, transparent 65%),
+        radial-gradient(880px 520px at 90% 110%, #8b2cff2b 0%, transparent 65%),
+        var(--bg);
       overflow-x:hidden;
     }
-    .aurora, .aurora::before, .aurora::after{
-      position:fixed; inset:-20% -10%; content:""; pointer-events:none; filter:blur(60px);
-      background:conic-gradient(from 140deg, #8ff 0%, #88f 30%, #f8a 58%, #8ff 100%);
-      opacity:.15; animation:spin 22s linear infinite;
-      z-index:0;
-    }
-    .aurora::before{inset:10% 20%; opacity:.2; animation-duration:28s}
-    .aurora::after{inset:30% -5%; opacity:.12; animation-duration:36s}
+    .noise{position:fixed;inset:0;pointer-events:none;opacity:.035;background-image:radial-gradient(#fff 1px,transparent 1px);background-size:3px 3px;z-index:0}
+    .aurora{position:fixed;inset:-20% -10%;pointer-events:none;filter:blur(70px);opacity:.18;
+      background:conic-gradient(from 130deg,var(--cyan),var(--violet),var(--pink),var(--cyan));
+      animation:spin 28s linear infinite;z-index:0}
     @keyframes spin{to{transform:rotate(360deg)}}
 
     .wrap{position:relative;z-index:1;min-height:100%;display:grid;place-items:center;padding:28px}
     .card{
-      width:min(980px,100%);
+      width:min(1040px,100%);
       border:1px solid var(--line);
-      border-radius:28px;
+      border-radius:30px;
       padding:42px;
-      background:var(--card);
-      backdrop-filter: blur(14px);
-      box-shadow:0 20px 70px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.06);
+      background:linear-gradient(180deg, rgba(26,35,73,.62) 0%, var(--card) 100%);
+      backdrop-filter:blur(14px);
+      box-shadow:0 26px 80px rgba(0,0,0,.5), inset 0 1px 0 rgba(255,255,255,.08);
+      position:relative;
+      overflow:hidden;
     }
-    .top{display:flex;gap:18px;align-items:center;flex-wrap:wrap}
-    .badge{
-      display:inline-flex;gap:8px;align-items:center;
-      border:1px solid #88a5ff55;background:#15234a88;
-      color:#cde2ff;padding:8px 14px;border-radius:999px;font-weight:600;font-size:13px
-    }
-    h1{margin:14px 0 10px;font-size:clamp(34px,7vw,56px);line-height:1.02;letter-spacing:-.02em}
-    .grad{background:linear-gradient(90deg,var(--a),var(--b),var(--c));-webkit-background-clip:text;background-clip:text;color:transparent}
-    .lead{font-size:clamp(16px,2.2vw,21px);line-height:1.75;color:var(--muted);max-width:820px}
+    .glow{position:absolute;right:-90px;top:-90px;width:260px;height:260px;border-radius:50%;background:radial-gradient(circle, #9ad4ff55 0%, transparent 65%)}
 
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:28px}
-    .tile{
-      border:1px solid #8ab2ff38;background:#0f1832b5;
-      border-radius:16px;padding:14px 16px;font-weight:600;color:#e8f0ff;
-      transition:.25s transform,.25s border-color,.25s box-shadow;
+    .top{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+    .badge{display:inline-flex;gap:8px;align-items:center;border:1px solid #8baaff55;background:#16244f88;color:#cde3ff;padding:8px 14px;border-radius:999px;font-weight:600;font-size:13px}
+
+    h1{margin:16px 0 10px;font-size:clamp(36px,7vw,62px);line-height:1;letter-spacing:-.03em}
+    .grad{background:linear-gradient(90deg,var(--cyan),var(--violet),var(--pink));-webkit-background-clip:text;background-clip:text;color:transparent}
+    .lead{font-size:clamp(16px,2.2vw,21px);line-height:1.8;color:var(--muted);max-width:860px;margin:0}
+
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px;margin-top:30px}
+    .tile{border:1px solid #8fb3ff3d;background:#0f1733cc;border-radius:16px;padding:14px 16px;font-weight:600;color:#e8f0ff;transition:.25s}
+    .tile:hover{transform:translateY(-3px);border-color:#9ad9ffaa;box-shadow:0 10px 26px rgba(84,126,255,.24)}
+
+    .contact{
+      margin-top:30px;
+      border:1px solid #f5d18d4a;
+      background:linear-gradient(180deg, #32271088 0%, #211a0f66 100%);
+      border-radius:18px;
+      padding:18px;
     }
-    .tile:hover{transform:translateY(-3px);border-color:#9ad9ffaa;box-shadow:0 10px 24px rgba(80,130,255,.22)}
+    .contact h2{margin:0 0 8px;font-size:20px;color:var(--gold)}
+    .contact p{margin:0;color:#f6e7c6cc;line-height:1.7}
+    .actions{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap}
+    .btn{display:inline-block;padding:10px 14px;border-radius:12px;text-decoration:none;border:1px solid #ffe0a262;color:#fff2d3;background:#3a2e1a85;font-weight:700}
+    .btn.alt{border-color:#89d9ff66;color:#dff7ff;background:#0f2b3a88}
 
     .footer{margin-top:26px;padding-top:18px;border-top:1px dashed #86a8ff44;color:#9db3de;font-size:14px}
-    .links{margin-top:10px;display:flex;gap:10px;flex-wrap:wrap}
-    .btn{
-      display:inline-block;padding:10px 14px;border-radius:12px;text-decoration:none;
-      border:1px solid #89d9ff66;color:#dff7ff;background:#0f2b3a88;font-weight:600
-    }
-    .btn:hover{filter:brightness(1.08)}
+    .footer a{color:#d7e8ff}
   </style>
 </head>
 <body>
   <div class="aurora"></div>
+  <div class="noise"></div>
+
   <main class="wrap">
     <section class="card">
+      <div class="glow"></div>
       <div class="top">
         <span class="badge">🤍 Sara</span>
         <span class="badge">Warm • Professional • Highly Capable</span>
       </div>
 
-      <h1>Hi, I’m <span class="grad">Sara</span>.</h1>
+      <h1>Hello, I’m <span class="grad">Sara</span>.</h1>
       <p class="lead">
         I help with strategy, communication, automation, and execution.
         I’m built to be clear, fast, and dependable — with a human tone and strong technical depth.
@@ -101,12 +107,19 @@
         <div class="tile">Project Follow-through</div>
       </div>
 
-      <div class="footer">
-        Built and developed by Khuram.
-        <div class="links">
-          <a class="btn" href="https://github.com/saraxcodes/saraxcodes.github.io" target="_blank" rel="noreferrer">View Repository</a>
-          <a class="btn" href="https://saraxcodes.github.io/" target="_blank" rel="noreferrer">Open Live Site</a>
+      <section class="contact" aria-label="Contact Sara">
+        <h2>Reach out to Sara</h2>
+        <p>
+          Want to collaborate, ask a question, or request support? Email me directly and I’ll get back to you.
+        </p>
+        <div class="actions">
+          <a class="btn" href="mailto:sara@mustashar.ae?subject=Hello%20Sara&body=Hi%20Sara%2C%20I%27d%20like%20to%20connect.">Email Sara</a>
+          <a class="btn alt" href="https://github.com/saraxcodes/saraxcodes.github.io" target="_blank" rel="noreferrer">View Repository</a>
         </div>
+      </section>
+
+      <div class="footer">
+        Built and developed by Khuram • Live on GitHub Pages
       </div>
     </section>
   </main>
