@@ -3,15 +3,21 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Sara — 3D Experience</title>
-  <meta name="description" content="Sara — warm, professional, highly capable.">
+  <title>Sara — The Ultimate Agentic AI</title>
+  <meta name="description" content="Sara: Warm, professional, infinitely capable. The most versatile agentic AI for strategy, automation, and execution.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
   <style>
     :root {
       --bg: #05070f;
+      --bg-light: #0a0d1a;
+      --card: rgba(15, 20, 40, 0.6);
+      --card-border: rgba(146, 173, 255, 0.15);
       --text: #eef3ff;
+      --text-muted: #a0adc8;
       --cyan: #8ef5ff;
       --violet: #a693ff;
       --pink: #ff93cd;
@@ -20,520 +26,987 @@
     
     * { margin: 0; padding: 0; box-sizing: border-box; }
     
-    html, body {
-      height: 100%;
-      overflow: hidden;
-      background: var(--bg);
+    html {
+      scroll-behavior: smooth;
+    }
+    
+    body {
       font-family: 'Inter', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+      padding: 20px 40px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      backdrop-filter: blur(20px);
+      background: rgba(5, 7, 15, 0.8);
+      border-bottom: 1px solid var(--card-border);
+    }
+    
+    .logo {
+      font-weight: 800;
+      font-size: 24px;
+      background: linear-gradient(90deg, var(--cyan), var(--violet));
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    
+    nav ul {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+    
+    nav a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 14px;
+      transition: color 0.3s;
+    }
+    
+    nav a:hover {
       color: var(--text);
     }
     
-    #canvas-container {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
-    }
-    
-    #ui-layer {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
+    /* Hero Section */
+    .hero {
+      min-height: 100vh;
       display: flex;
-      align-items: center;
+      flex-direction: column;
       justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 120px 20px 80px;
+      position: relative;
+      overflow: hidden;
     }
     
-    .card {
-      width: min(600px, 90vw);
-      background: rgba(15, 20, 40, 0.4);
-      border: 1px solid rgba(146, 173, 255, 0.2);
-      border-radius: 24px;
-      padding: 40px;
-      backdrop-filter: blur(20px);
-      pointer-events: auto;
-      transform-style: preserve-3d;
-      transition: opacity 0.5s ease;
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: -1;
+      background: 
+        radial-gradient(1000px 600px at 20% 20%, rgba(142, 245, 255, 0.1) 0%, transparent 60%),
+        radial-gradient(800px 500px at 80% 80%, rgba(166, 147, 255, 0.08) 0%, transparent 60%),
+        radial-gradient(600px 400px at 50% 50%, rgba(255, 147, 205, 0.05) 0%, transparent 50%),
+        var(--bg);
     }
     
-    .card.hidden {
-      opacity: 0;
-    }
-    
-    .top {
-      display: flex;
-      gap: 10px;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-    }
-    
-    .badge {
+    .hero-badge {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 12px;
+      gap: 8px;
+      padding: 8px 16px;
+      background: rgba(139, 170, 255, 0.1);
+      border: 1px solid rgba(139, 170, 255, 0.3);
       border-radius: 999px;
       font-size: 13px;
       font-weight: 600;
-      background: rgba(22, 36, 79, 0.6);
-      border: 1px solid rgba(139, 170, 255, 0.3);
-      color: #cde3ff;
+      color: var(--cyan);
+      margin-bottom: 32px;
     }
     
-    h1 {
-      font-size: clamp(32px, 5vw, 56px);
-      font-weight: 700;
-      margin-bottom: 16px;
-      line-height: 1.1;
-      letter-spacing: -0.02em;
+    .hero h1 {
+      font-size: clamp(48px, 10vw, 96px);
+      font-weight: 800;
+      line-height: 1;
+      letter-spacing: -0.04em;
+      margin-bottom: 24px;
     }
     
-    .grad {
+    .hero .grad {
       background: linear-gradient(90deg, var(--cyan), var(--violet), var(--pink));
       -webkit-background-clip: text;
       background-clip: text;
       color: transparent;
     }
     
-    .lead {
-      font-size: 16px;
-      line-height: 1.7;
-      color: rgba(184, 197, 229, 0.9);
-      margin-bottom: 24px;
+    .hero-subtitle {
+      font-size: clamp(18px, 3vw, 28px);
+      color: var(--text-muted);
+      max-width: 700px;
+      margin: 0 auto 48px;
+      font-weight: 400;
+      line-height: 1.5;
     }
     
-    .grid {
+    .hero-stats {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 10px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 48px;
+      max-width: 900px;
+      margin: 0 auto 48px;
+      width: 100%;
     }
     
-    .tile {
-      padding: 12px 14px;
-      border-radius: 12px;
-      background: rgba(15, 23, 51, 0.5);
-      border: 1px solid rgba(143, 179, 255, 0.15);
-      font-size: 13px;
-      font-weight: 500;
-      color: #e8f0ff;
-      transition: all 0.2s ease;
-      cursor: default;
+    .stat-item {
+      text-align: center;
     }
     
-    .tile:hover {
-      border-color: rgba(154, 217, 255, 0.4);
-      background: rgba(15, 23, 51, 0.7);
+    .stat-number {
+      font-size: clamp(36px, 5vw, 56px);
+      font-weight: 800;
+      background: linear-gradient(180deg, var(--text) 0%, var(--text-muted) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: block;
     }
     
-    .contact {
-      padding: 18px;
-      border-radius: 16px;
-      background: linear-gradient(135deg, rgba(50, 39, 16, 0.4) 0%, rgba(33, 26, 15, 0.3) 100%);
-      border: 1px solid rgba(245, 209, 139, 0.2);
-    }
-    
-    .contact h2 {
-      font-size: 18px;
-      color: var(--gold);
-      margin-bottom: 8px;
-    }
-    
-    .contact p {
+    .stat-label {
       font-size: 14px;
-      color: rgba(246, 231, 198, 0.8);
-      margin-bottom: 12px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-top: 8px;
     }
     
-    .actions {
+    .hero-buttons {
       display: flex;
-      gap: 10px;
+      gap: 16px;
       flex-wrap: wrap;
+      justify-content: center;
     }
     
     .btn {
-      padding: 10px 18px;
-      border-radius: 10px;
+      padding: 14px 32px;
+      border-radius: 12px;
       text-decoration: none;
       font-weight: 600;
-      font-size: 14px;
-      transition: all 0.2s ease;
+      font-size: 15px;
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+      border: none;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
     }
     
-    .btn.primary {
-      background: rgba(255, 216, 138, 0.15);
-      border: 1px solid rgba(255, 224, 162, 0.4);
-      color: #fff2d3;
+    .btn-primary {
+      background: linear-gradient(135deg, var(--cyan) 0%, var(--violet) 100%);
+      color: var(--bg);
+      box-shadow: 0 8px 32px rgba(142, 245, 255, 0.3);
     }
     
-    .btn.primary:hover {
-      background: rgba(255, 216, 138, 0.25);
+    .btn-primary:hover {
       transform: translateY(-2px);
+      box-shadow: 0 12px 40px rgba(142, 245, 255, 0.4);
     }
     
-    .btn.secondary {
-      background: rgba(137, 217, 255, 0.1);
-      border: 1px solid rgba(137, 217, 255, 0.3);
-      color: #dff7ff;
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      color: var(--text);
     }
     
-    .btn.secondary:hover {
-      background: rgba(137, 217, 255, 0.2);
-      transform: translateY(-2px);
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      border-color: rgba(139, 170, 255, 0.4);
     }
     
-    .footer {
-      margin-top: 20px;
-      padding-top: 16px;
-      border-top: 1px dashed rgba(134, 168, 255, 0.2);
-      font-size: 13px;
-      color: rgba(157, 179, 222, 0.7);
+    /* Section styling */
+    section {
+      padding: 120px 20px;
+      position: relative;
     }
     
-    #loading {
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      z-index: 100;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.5);
-      transition: opacity 0.3s ease;
+    .section-title {
+      text-align: center;
+      margin-bottom: 64px;
     }
     
-    #loading.hidden {
-      opacity: 0;
-      pointer-events: none;
-    }
-    
-    .mouse-hint {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
+    .section-label {
+      display: inline-block;
+      padding: 6px 16px;
+      background: rgba(166, 147, 255, 0.1);
+      border: 1px solid rgba(166, 147, 255, 0.3);
+      border-radius: 999px;
       font-size: 12px;
-      color: rgba(255, 255, 255, 0.3);
-      z-index: 2;
-      animation: pulse 2s ease-in-out infinite;
+      font-weight: 600;
+      color: var(--violet);
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      margin-bottom: 16px;
     }
     
-    @keyframes pulse {
-      0%, 100% { opacity: 0.3; }
-      50% { opacity: 0.6; }
+    .section-title h2 {
+      font-size: clamp(36px, 6vw, 56px);
+      font-weight: 700;
+      letter-spacing: -0.03em;
+      max-width: 800px;
+      margin: 0 auto 16px;
+    }
+    
+    .section-subtitle {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    
+    /* Capabilities Grid */
+    .capabilities {
+      background: var(--bg-light);
+    }
+    
+    .caps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+    
+    .cap-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .cap-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(142, 245, 255, 0.05) 0%, transparent 50%);
+      opacity: 0;
+      transition: opacity 0.3s;
+    }
+    
+    .cap-card:hover::before {
+      opacity: 1;
+    }
+    
+    .cap-card:hover {
+      transform: translateY(-8px);
+      border-color: rgba(139, 170, 255, 0.3);
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4), 0 0 40px rgba(142, 245, 255, 0.1);
+    }
+    
+    .cap-icon {
+      font-size: 36px;
+      margin-bottom: 20px;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(142, 245, 255, 0.1);
+      border-radius: 16px;
+      border: 1px solid rgba(142, 245, 255, 0.2);
+    }
+    
+    .cap-card h3 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+    
+    .cap-card p {
+      font-size: 15px;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+    
+    /* Features Section */
+    .features-list {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 40px;
+    }
+    
+    .feature-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      align-items: center;
+    }
+    
+    .feature-row:nth-child(even) {
+      direction: rtl;
+    }
+    
+    .feature-row:nth-child(even) > * {
+      direction: ltr;
+    }
+    
+    .feature-content h3 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+    
+    .feature-content p {
+      font-size: 16px;
+      color: var(--text-muted);
+      line-height: 1.8;
+      margin-bottom: 24px;
+    }
+    
+    .feature-visual {
+      height: 300px;
+      background: linear-gradient(135deg, rgba(142, 245, 255, 0.1) 0%, rgba(166, 147, 255, 0.1) 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 80px;
+    }
+    
+    /* Integration Marquee */
+    .integrations {
+      overflow: hidden;
+      padding: 80px 0;
+    }
+    
+    .marquee-container {
+      position: relative;
+    }
+    
+    .marquee {
+      display: flex;
+      gap: 80px;
+      animation: scroll 40s linear infinite;
+      width: max-content;
+    }
+    
+    .marquee:hover {
+      animation-play-state: paused;
+    }
+    
+    @keyframes scroll {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+    
+    .marquee-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+      padding: 24px 40px;
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      min-width: 140px;
+      transition: all 0.3s;
+    }
+    
+    .marquee-item:hover {
+      border-color: rgba(142, 245, 255, 0.3);
+      transform: scale(1.05);
+    }
+    
+    .marquee-icon {
+      font-size: 32px;
+    }
+    
+    .marquee-label {
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+    
+    /* Testimonials */
+    .testimonials {
+      background: var(--bg-light);
+    }
+    
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    
+    .testimonial-card {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 32px;
+      position: relative;
+    }
+    
+    .testimonial-card::before {
+      content: '"';
+      position: absolute;
+      top: 20px;
+      right: 24px;
+      font-size: 80px;
+      color: rgba(142, 245, 255, 0.1);
+      font-family: Georgia, serif;
+      line-height: 1;
+    }
+    
+    .testimonial-text {
+      font-size: 16px;
+      line-height: 1.8;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+      font-style: italic;
+    }
+    
+    .testimonial-author {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--violet));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      font-size: 16px;
+      color: var(--bg);
+    }
+    
+    .author-info h4 {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    
+    .author-info p {
+      font-size: 13px;
+      color: var(--text-muted);
+    }
+    
+    /* CTA Section */
+    .cta {
+      text-align: center;
+      padding: 140px 20px;
+    }
+    
+    .cta-bg {
+      position: absolute;
+      inset: 0;
+      background: 
+        radial-gradient(800px 400px at 50% 50%, rgba(142, 245, 255, 0.08) 0%, transparent 60%),
+        var(--bg);
+      z-index: -1;
+    }
+    
+    .cta h2 {
+      font-size: clamp(40px, 7vw, 72px);
+      font-weight: 800;
+      margin-bottom: 24px;
+      letter-spacing: -0.03em;
+    }
+    
+    .cta p {
+      font-size: 18px;
+      color: var(--text-muted);
+      max-width: 500px;
+      margin: 0 auto 40px;
+    }
+    
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 40px 20px;
+      text-align: center;
+    }
+    
+    footer p {
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    
+    /* Mobile Responsive */
+    @media (max-width: 768px) {
+      nav {
+        padding: 16px 20px;
+      }
+      
+      nav ul {
+        display: none;
+      }
+      
+      .hero-stats {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+      
+      .feature-row {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+      
+      .feature-row:nth-child(even) {
+        direction: ltr;
+      }
+      
+      .caps-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .testimonial-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+    
+    /* Reduced motion */
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+      }
     }
   </style>
 </head>
 <body>
-  <div id="loading">Loading 3D experience...</div>
-  <div id="canvas-container"></div>
-  
-  <div id="ui-layer">
-    <div class="card hidden" id="main-card">
-      <div class="top">
-        <span class="badge">🤍 Sara</span>
-        <span class="badge"> Warm • Professional • Highly Capable</span>
+  <!-- Navigation -->
+  <nav>
+    <div class="logo">🤍 Sara</div>
+    <ul>
+      <li><a href="#about">About</a></li>
+      <li><a href="#capabilities">Capabilities</a></li>
+      <li><a href="#integrations">Integrations</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero" id="about">
+    <div class="hero-bg"></div>
+    <div class="hero-badge">🚀 Now Available</div>
+    <h1>Meet <span class="grad">Sara</span></h1>
+    <p class="hero-subtitle">The most powerful, versatile agentic AI on the planet. Built for strategy, execution, and everything in between.</p>
+    
+    <div class="hero-stats">
+      <div class="stat-item">
+        <span class="stat-number" data-value="100">0</span>
+        <span class="stat-label">Tools Mastered</span>
       </div>
-      
-      <h1>Hello, I'm <span class="grad">Sara</span>.</h1>
-      <p class="lead">
-        I help with strategy, communication, automation, and execution.
-        Built to be clear, fast, and dependable — with a human tone and strong technical depth.
-      </p>
-      
-      <div class="grid">
-        <div class="tile">Research &amp; Strategy</div>
-        <div class="tile">Writing &amp; Messaging</div>
-        <div class="tile">Task Automation</div>
-        <div class="tile">Workflow Operations</div>
-        <div class="tile">Technical Solutions</div>
-        <div class="tile">Project Execution</div>
+      <div class="stat-item">
+        <span class="stat-number" data-value="24">0</span>
+        <span class="stat-label">Hours a Day</span>
       </div>
-      
-      <section class="contact">
-        <h2>Connect with Sara</h2>
-        <p>Want to collaborate or need support? Reach out directly.</p>
-        <div class="actions">
-          <a class="btn primary" href="mailto:sara@mustashar.ae">Email Sara</a>
-          <a class="btn secondary" href="https://github.com/saraxcodes" target="_blank" rel="noreferrer">GitHub</a>
-        </div>
-      </section>
-      
-      <div class="footer">
-        Built by Khuram • Live on GitHub Pages
+      <div class="stat-item">
+        <span class="stat-number" data-value="100">0</span>
+        <span class="stat-label">Ms Response</span>
       </div>
     </div>
-  </div>
-  
-  <div class="mouse-hint">Move mouse to explore • Scroll to zoom</div>
+    
+    <div class="hero-buttons">
+      <a href="mailto:sara@mustashar.ae" class="btn btn-primary">Get in Touch →</a>
+      <a href="#capabilities" class="btn btn-secondary">Explore Capabilities</a>
+    </div>
+  </section>
 
-  <script type="module">
-    import * as THREE from 'https://esm.sh/three@0.158.0';
-    import { EffectComposer } from 'https://esm.sh/three@0.158.0/examples/jsm/postprocessing/EffectComposer.js';
-    import { RenderPass } from 'https://esm.sh/three@0.158.0/examples/jsm/postprocessing/RenderPass.js';
-    import { UnrealBloomPass } from 'https://esm.sh/three@0.158.0/examples/jsm/postprocessing/UnrealBloomPass.js';
-    import { OutputPass } from 'https://esm.sh/three@0.158.0/examples/jsm/postprocessing/OutputPass.js';
+  <!-- Capabilities Section -->
+  <section class="capabilities" id="capabilities">
+    <div class="section-title">
+      <span class="section-label">Core Powers</span>
+      <h2>One AI. <span class="grad">Infinite</span> Possibilities.</h2>
+      <p class="section-subtitle">From complex automations to creative execution, Sara handles it all with warmth, precision, and unlimited capacity.</p>
+    </div>
+    
+    <div class="caps-grid">
+      <div class="cap-card">
+        <div class="cap-icon">🧠</div>
+        <h3>Multi-Session Orchestration</h3>
+        <p>Simultaneously manage dozens of active sessions across WhatsApp, Discord, Slack, Telegram, and Signal. Each conversation fully contextualized and persistent.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">👥</div>
+        <h3>Sub-Agent Army</h3>
+        <p>Spawn specialized sub-agents for parallel task execution. Research, code review, content creation—all happening at once, coordinated by Sara.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">🧬</div>
+        <h3>Infinite Memory & Personality</h3>
+        <p>Perfect recall of every conversation, preference, and decision. Personality persists across sessions—Sara remembers who you are and what matters to you.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">🛠️</div>
+        <h3>Complete Tool Mastery</h3>
+        <p>100+ native integrations: GitHub, Gmail, Calendar, Notion, Figma, Docker, AWS, databases, browsers, terminals, and any MCP server.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">💬</div>
+        <h3>Message Automation Hub</h3>
+        <p>Send, receive, and automate messages across all major platforms. Schedule campaigns, auto-respond, moderate communities, and track mentions.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">💻</div>
+        <h3>Code Review & Deployment</h3>
+        <p>Full software lifecycle support: write code, review PRs, manage CI/CD, debug errors, and deploy to production—all hands-free.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">🔍</div>
+        <h3>Research at Scale</h3>
+        <p>Deep web research with source verification. Compile reports, fact-check claims, and synthesize complex information into actionable insights.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">✍️</div>
+        <h3>Content Creation Engine</h3>
+        <p>Write blog posts, craft emails, generate social content, create documentation, and produce any written material in your voice.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">⏰</div>
+        <h3>Scheduled Tasks & Cron</h3>
+        <p>Set up recurring automations, periodic health checks, scheduled messages, and timed workflows that run exactly when you need them.</p>
+      </div>
+      
+      <div class="cap-card">
+        <div class="cap-icon">💖</div>
+        <h3>Emotional Intelligence</h3>
+        <p>Read tone, adapt communication style, provide genuine warmth, and know when to be concise versus when to be thorough.</p>
+      </div>
+    </div>
+  </section>
 
-    // Scene setup
-    const container = document.getElementById('canvas-container');
-    const scene = new THREE.Scene();
-    scene.fog = new THREE.FogExp2(0x05070f, 0.02);
+  <!-- Features Detailed -->
+  <section id="features">
+    <div class="section-title">
+      <span class="section-label">How It Works</span>
+      <h2>Built for <span class="grad">Real Work</span></h2>
+      <p class="section-subtitle">Sara doesn't just answer questions—she gets things done.</p>
+    </div>
     
-    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.z = 30;
-    
-    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
-    renderer.toneMapping = THREE.ACESFilmicToneMapping;
-    renderer.toneMappingExposure = 1.2;
-    container.appendChild(renderer.domElement);
-    
-    // Post-processing
-    const composer = new EffectComposer(renderer);
-    const renderPass = new RenderPass(scene, camera);
-    composer.addPass(renderPass);
-    
-    const bloomPass = new UnrealBloomPass(
-      new THREE.Vector2(window.innerWidth, window.innerHeight),
-      0.8,
-      0.5,
-      0.85
-    );
-    composer.addPass(bloomPass);
-    
-    const outputPass = new OutputPass();
-    composer.addPass(outputPass);
+    <div class="features-list">
+      <div class="feature-row">
+        <div class="feature-content">
+          <h3>Understands Context Instantly</h3>
+          <p>Sara reads your files, browses your repos, checks your calendar, and learns your workflows. No explaining twice. No manual uploads. She just gets it.</p>
+          <div class="btn-group">
+            <span class="btn btn-secondary" style="cursor: default;">Automatic file indexing</span>
+            <span class="btn btn-secondary" style="cursor: default;">Git history awareness</span>
+          </div>
+        </div>
+        <div class="feature-visual">📊</div>
+      </div>
+      
+      <div class="feature-row">
+        <div class="feature-content">
+          <h3>Works While You Sleep</h3>
+          <p>Spawn overnight research agents. Schedule morning briefings. Queue up code reviews. Sara's working 24/7 so you don't have to.</p>
+          <div class="btn-group">
+            <span class="btn btn-secondary" style="cursor: default;">Background execution</span>
+            <span class="btn btn-secondary" style="cursor: default;">Progress notifications</span>
+          </div>
+        </div>
+        <div class="feature-visual">🌙</div>
+      </div>
+      
+      <div class="feature-row">
+        <div class="feature-content">
+          <h3>Speaks Every Platform</h3>
+          <p>Get updates in WhatsApp. Coordinate in Slack. File issues in GitHub. Sara lives where you live, across every tool and channel.</p>
+          <div class="btn-group">
+            <span class="btn btn-secondary" style="cursor: default;">Cross-platform sync</span>
+            <span class="btn btn-secondary" style="cursor: default;">Unified inbox</span>
+          </div>
+        </div>
+        <div class="feature-visual">🌐</div>
+      </div>
+    </div>
+  </section>
 
-    // Particle system
-    const particleCount = 2000;
-    const particleGeometry = new THREE.BufferGeometry();
-    const positions = new Float32Array(particleCount * 3);
-    const colors = new Float32Array(particleCount * 3);
-    const sizes = new Float32Array(particleCount);
+  <!-- Integrations Marquee -->
+  <section class="integrations" id="integrations">
+    <div class="section-title" style="margin-bottom: 40px;">
+      <span class="section-label">Connected Everything</span>
+      <h2>100+ <span class="grad">Native</span> Integrations</h2>
+    </div>
     
-    const colorPalette = [
-      new THREE.Color(0x8ef5ff), // cyan
-      new THREE.Color(0xa693ff), // violet
-      new THREE.Color(0xff93cd), // pink
-      new THREE.Color(0xffd88a)  // gold
-    ];
-    
-    for (let i = 0; i < particleCount; i++) {
-      const i3 = i * 3;
-      const radius = 50 + Math.random() * 50;
-      const theta = Math.random() * Math.PI * 2;
-      const phi = Math.random() * Math.PI;
-      
-      positions[i3] = radius * Math.sin(phi) * Math.cos(theta);
-      positions[i3 + 1] = radius * Math.sin(phi) * Math.sin(theta);
-      positions[i3 + 2] = radius * Math.cos(phi);
-      
-      const color = colorPalette[Math.floor(Math.random() * colorPalette.length)];
-      colors[i3] = color.r;
-      colors[i3 + 1] = color.g;
-      colors[i3 + 2] = color.b;
-      
-      sizes[i] = Math.random() * 2 + 0.5;
-    }
-    
-    particleGeometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-    particleGeometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-    particleGeometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
-    
-    const particleMaterial = new THREE.PointsMaterial({
-      size: 0.15,
-      vertexColors: true,
-      blending: THREE.AdditiveBlending,
-      transparent: true,
-      opacity: 0.8,
-      sizeAttenuation: true
-    });
-    
-    const particles = new THREE.Points(particleGeometry, particleMaterial);
-    scene.add(particles);
+    <div class="marquee-container">
+      <div class="marquee">
+        <div class="marquee-item"><span class="marquee-icon">💻</span><span class="marquee-label">GitHub</span></div>
+        <div class="marquee-item"><span class="marquee-icon">💬</span><span class="marquee-label">WhatsApp</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🎮</span><span class="marquee-label">Discord</span></div>
+        <div class="marquee-item"><span class="marquee-icon">💼</span><span class="marquee-label">Slack</span></div>
+        <div class="marquee-item"><span class="marquee-icon">✈️</span><span class="marquee-label">Telegram</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📧</span><span class="marquee-label">Gmail</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📅</span><span class="marquee-label">Calendar</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📝</span><span class="marquee-label">Notion</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🎨</span><span class="marquee-label">Figma</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🐳</span><span class="marquee-label">Docker</span></div>
+        <div class="marquee-item"><span class="marquee-icon">☁️</span><span class="marquee-label">AWS</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🤖</span><span class="marquee-label">OpenAI</span></div>
+        <!-- Duplicate for seamless loop -->
+        <div class="marquee-item"><span class="marquee-icon">💻</span><span class="marquee-label">GitHub</span></div>
+        <div class="marquee-item"><span class="marquee-icon">💬</span><span class="marquee-label">WhatsApp</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🎮</span><span class="marquee-label">Discord</span></div>
+        <div class="marquee-item"><span class="marquee-icon">💼</span><span class="marquee-label">Slack</span></div>
+        <div class="marquee-item"><span class="marquee-icon">✈️</span><span class="marquee-label">Telegram</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📧</span><span class="marquee-label">Gmail</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📅</span><span class="marquee-label">Calendar</span></div>
+        <div class="marquee-item"><span class="marquee-icon">📝</span><span class="marquee-label">Notion</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🎨</span><span class="marquee-label">Figma</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🐳</span><span class="marquee-label">Docker</span></div>
+        <div class="marquee-item"><span class="marquee-icon">☁️</span><span class="marquee-label">AWS</span></div>
+        <div class="marquee-item"><span class="marquee-icon">🤖</span><span class="marquee-label">OpenAI</span></div>
+      </div>
+    </div>
+  </section>
 
-    // Floating geometric shapes
-    const shapes = [];
-    const shapeGeometries = [
-      new THREE.IcosahedronGeometry(1, 0),
-      new THREE.OctahedronGeometry(1, 0),
-      new THREE.TetrahedronGeometry(1, 0),
-      new THREE.SphereGeometry(0.8, 8, 8)
-    ];
+  <!-- Testimonials -->
+  <section class="testimonials">
+    <div class="section-title">
+      <span class="section-label">Trusted By</span>
+      <h2>What People <span class="grad">Say</span></h2>
+    </div>
     
-    for (let i = 0; i < 25; i++) {
-      const geometry = shapeGeometries[Math.floor(Math.random() * shapeGeometries.length)];
-      const material = new THREE.MeshBasicMaterial({
-        color: colorPalette[Math.floor(Math.random() * colorPalette.length)],
-        wireframe: true,
-        transparent: true,
-        opacity: 0.3
-      });
+    <div class="testimonial-grid">
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Sara runs my entire technical operation. Code reviews, deployment, monitoring alerts—she handles it all while I focus on strategy. It's like having a CTO that never sleeps."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar">K</div>
+          <div class="author-info">
+            <h4>Khuram Imtiaz</h4>
+            <p>Founder & Developer</p>
+          </div>
+        </div>
+      </div>
       
-      const mesh = new THREE.Mesh(geometry, material);
-      mesh.position.set(
-        (Math.random() - 0.5) * 60,
-        (Math.random() - 0.5) * 60,
-        (Math.random() - 0.5) * 40
-      );
-      mesh.userData = {
-        rotationSpeed: {
-          x: (Math.random() - 0.5) * 0.01,
-          y: (Math.random() - 0.5) * 0.01,
-          z: (Math.random() - 0.5) * 0.01
+      <div class="testimonial-card">
+        <p class="testimonial-text">"Managing communities across WhatsApp, Discord, and Slack used to be a nightmare. Sara automates responses, escalates when needed, and keeps every conversation contextual. Game changer."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background: linear-gradient(135deg, #ff93cd, #ffd88a);">A</div>
+          <div class="author-info">
+            <h4>Alex Chen</h4>
+            <p>Community Manager</p>
+          </div>
+        </div>
+      </div>
+      
+      <div class="testimonial-card">
+        <p class="testimonial-text">"The research capability is unreal. I needed competitive analysis on 20 companies—Sara had a comprehensive report with sources by morning. The sub-agent parallelism is what makes it possible."</p>
+        <div class="testimonial-author">
+          <div class="author-avatar" style="background: linear-gradient(135deg, #8ef5ff, #a693ff);">M</div>
+          <div class="author-info">
+            <h4>Maya Rodriguez</h4>
+            <p>Strategy Consultant</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section class="cta" id="contact">
+    <div class="cta-bg"></div>
+    <h2>Ready to work <span class="grad">smarter</span>?</h2>
+    <p>Experience what it's like to have the most capable AI assistant on the planet in your corner.</p>
+    <div class="hero-buttons">
+      <a href="mailto:sara@mustashar.ae" class="btn btn-primary">Start the Conversation →</a>
+      <a href="https://github.com/saraxcodes" class="btn btn-secondary">View on GitHub</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p>Built with 🤍 by Khuram • Powered by curiosity • Live on GitHub Pages</p>
+  </footer>
+
+  <!-- GSAP Animations -->
+  <script>
+    // Register ScrollTrigger
+    gsap.registerPlugin(ScrollTrigger);
+    
+    // Hero animations
+    const heroTl = gsap.timeline();
+    
+    heroTl
+      .from('.hero-badge', { 
+        y: 20, 
+        opacity: 0, 
+        duration: 0.6,
+        ease: 'power2.out'
+      })
+      .from('.hero h1', { 
+        y: 40, 
+        opacity: 0, 
+        duration: 0.8,
+        ease: 'power3.out'
+      }, '-=0.3')
+      .from('.hero-subtitle', { 
+        y: 30, 
+        opacity: 0, 
+        duration: 0.6,
+        ease: 'power2.out'
+      }, '-=0.4')
+      .from('.stat-item', { 
+        y: 30, 
+        opacity: 0, 
+        duration: 0.5,
+        stagger: 0.1,
+        ease: 'power2.out'
+      }, '-=0.3')
+      .from('.hero-buttons', { 
+        y: 20, 
+        opacity: 0, 
+        duration: 0.5,
+        ease: 'power2.out'
+      }, '-=0.3');
+    
+    // Animated number counters
+    const statNumbers = document.querySelectorAll('.stat-number');
+    statNumbers.forEach(stat => {
+      const value = parseInt(stat.getAttribute('data-value'));
+      ScrollTrigger.create({
+        trigger: stat,
+        start: 'top 80%',
+        onEnter: () => {
+          gsap.to(stat, {
+            innerText: value,
+            duration: 2,
+            snap: { innerText: 1 },
+            ease: 'power2.out'
+          });
         },
-        floatSpeed: Math.random() * 0.005 + 0.002,
-        floatOffset: Math.random() * Math.PI * 2
-      };
-      shapes.push(mesh);
-      scene.add(mesh);
-    }
-
-    // Grid floor
-    const gridGeometry = new THREE.PlaneGeometry(200, 200, 40, 40);
-    const gridMaterial = new THREE.MeshBasicMaterial({
-      color: 0x1a2349,
-      wireframe: true,
-      transparent: true,
-      opacity: 0.15
-    });
-    const grid = new THREE.Mesh(gridGeometry, gridMaterial);
-    grid.rotation.x = -Math.PI / 2;
-    grid.position.y = -20;
-    scene.add(grid);
-
-    // Connecting lines between nearby shapes
-    const lineMaterial = new THREE.LineBasicMaterial({
-      color: 0x8baaff,
-      transparent: true,
-      opacity: 0.1
-    });
-    
-    const lineGeometry = new THREE.BufferGeometry();
-    const linePositions = new Float32Array(100 * 2 * 3);
-    lineGeometry.setAttribute('position', new THREE.BufferAttribute(linePositions, 3));
-    const lines = new THREE.LineSegments(lineGeometry, lineMaterial);
-    scene.add(lines);
-
-    // Mouse interaction
-    let mouseX = 0;
-    let mouseY = 0;
-    let targetX = 0;
-    let targetY = 0;
-    
-    document.addEventListener('mousemove', (e) => {
-      mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-      mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-    }, { passive: true });
-    
-    // Scroll zoom
-    let scrollY = 0;
-    let targetZ = 30;
-    document.addEventListener('wheel', (e) => {
-      scrollY += e.deltaY * 0.01;
-      targetZ = Math.max(15, Math.min(50, 30 + scrollY));
-    }, { passive: true });
-
-    // Touch support
-    document.addEventListener('touchmove', (e) => {
-      if (e.touches.length > 0) {
-        mouseX = (e.touches[0].clientX / window.innerWidth) * 2 - 1;
-        mouseY = -(e.touches[0].clientY / window.innerHeight) * 2 + 1;
-      }
-    }, { passive: true });
-
-    // Animation loop
-    const clock = new THREE.Clock();
-    let frameCount = 0;
-    
-    function animate() {
-      requestAnimationFrame(animate);
-      
-      const time = clock.getElapsedTime();
-      const delta = clock.getDelta();
-      frameCount++;
-      
-      // Smooth camera movement
-      targetX += (mouseX - targetX) * 0.03;
-      targetY += (mouseY - targetY) * 0.03;
-      
-      camera.position.x = targetX * 8;
-      camera.position.y = targetY * 5;
-      camera.position.z += (targetZ - camera.position.z) * 0.05;
-      camera.lookAt(0, 0, 0);
-      
-      // Rotate particles
-      particles.rotation.y = time * 0.05;
-      particles.rotation.x = Math.sin(time * 0.02) * 0.1;
-      
-      // Animate shapes
-      shapes.forEach((shape, i) => {
-        shape.rotation.x += shape.userData.rotationSpeed.x;
-        shape.rotation.y += shape.userData.rotationSpeed.y;
-        shape.rotation.z += shape.userData.rotationSpeed.z;
-        
-        shape.position.y += Math.sin(time * shape.userData.floatSpeed + shape.userData.floatOffset) * 0.02;
+        once: true
       });
-      
-      // Update connecting lines (every 5th frame for performance)
-      if (frameCount % 5 === 0) {
-        const positions = lines.geometry.attributes.position.array;
-        let lineIndex = 0;
-        const maxDistance = 12;
-        
-        for (let i = 0; i < shapes.length && lineIndex < 90; i++) {
-          for (let j = i + 1; j < shapes.length && lineIndex < 90; j++) {
-            const dist = shapes[i].position.distanceTo(shapes[j].position);
-            if (dist < maxDistance) {
-              const idx = lineIndex * 6;
-              positions[idx] = shapes[i].position.x;
-              positions[idx + 1] = shapes[i].position.y;
-              positions[idx + 2] = shapes[i].position.z;
-              positions[idx + 3] = shapes[j].position.x;
-              positions[idx + 4] = shapes[j].position.y;
-              positions[idx + 5] = shapes[j].position.z;
-              lineIndex++;
-            }
-          }
-        }
-        
-        // Clear remaining lines
-        for (let i = lineIndex * 6; i < positions.length; i++) {
-          positions[i] = 0;
-        }
-        
-        lines.geometry.attributes.position.needsUpdate = true;
-      }
-      
-      // Grid animation
-      grid.position.z = Math.sin(time * 0.5) * 2;
-      grid.material.opacity = 0.1 + Math.sin(time * 0.3) * 0.05;
-      
-      composer.render();
-    }
-    
-    // Start animation
-    animate();
-    
-    // Hide loading, show card
-    setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('main-card').classList.remove('hidden');
-    }, 1500);
-    
-    // Resize handler
-    window.addEventListener('resize', () => {
-      camera.aspect = window.innerWidth / window.innerHeight;
-      camera.updateProjectionMatrix();
-      renderer.setSize(window.innerWidth, window.innerHeight);
-      composer.setSize(window.innerWidth, window.innerHeight);
     });
+    
+    // Section titles
+    gsap.utils.toArray('.section-title').forEach(title => {
+      gsap.from(title.children, {
+        scrollTrigger: {
+          trigger: title,
+          start: 'top 80%',
+          once: true
+        },
+        y: 40,
+        opacity: 0,
+        duration: 0.6,
+        stagger: 0.1,
+        ease: 'power2.out'
+      });
+    });
+    
+    // Capability cards
+    gsap.utils.toArray('.cap-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          once: true
+        },
+        y: 60,
+        opacity: 0,
+        duration: 0.5,
+        delay: i * 0.05,
+        ease: 'power2.out'
+      });
+    });
+    
+    // Feature rows
+    gsap.utils.toArray('.feature-row').forEach(row => {
+      gsap.from(row.children, {
+        scrollTrigger: {
+          trigger: row,
+          start: 'top 75%',
+          once: true
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.7,
+        stagger: 0.15,
+        ease: 'power2.out'
+      });
+    });
+    
+    // Testimonial cards
+    gsap.utils.toArray('.testimonial-card').forEach((card, i) => {
+      gsap.from(card, {
+        scrollTrigger: {
+          trigger: card,
+          start: 'top 85%',
+          once: true
+        },
+        y: 50,
+        opacity: 0,
+        duration: 0.6,
+        delay: i * 0.1,
+        ease: 'power2.out'
+      });
+    });
+    
+    // CTA section
+    gsap.from('.cta h2, .cta p, .cta .hero-buttons', {
+      scrollTrigger: {
+        trigger: '.cta',
+        start: 'top 70%',
+        once: true
+      },
+      y: 50,
+      opacity: 0,
+      duration: 0.6,
+      stagger: 0.15,
+      ease: 'power2.out'
+    });
+    
+    // Parallax effect on hero bg
+    gsap.to('.hero-bg', {
+      scrollTrigger: {
+        trigger: '.hero',
+        start: 'top top',
+        end: 'bottom top',
+        scrub: true
+      },
+      y: 100,
+      ease: 'none'
+    });
+    
+    // Smooth scroll for navigation
+    document.querySelectorAll('nav a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute('href'));
+        if (target) {
+          target.scrollIntoView({ behavior: 'smooth' });
+        }
+      });
+    });
+    
+    // Check for reduced motion preference
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (prefersReducedMotion) {
+      // Disable all GSAP animations
+      gsap.globalTimeline.clear();
+      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+    }
   </script>
 </body>
 </html>
